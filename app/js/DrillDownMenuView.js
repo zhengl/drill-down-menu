@@ -10,9 +10,7 @@ var DrillDownMenuView = Backbone.View.extend({
 	},
 
 	addOne: function(item) {
-		var itemView = new DrillDownMenuItemView({
-			model: item,
-		});
+		var itemView = new DrillDownMenuItemView({ model: item });
 		this.$el.append(itemView.render().el);
 	},
 
