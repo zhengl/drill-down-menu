@@ -1,16 +1,22 @@
 var DrillDownMenuView = Backbone.View.extend({
-	template: _.template('<input>'),
+	tagName: 'ul',
 
-	events: {
-		'click :text': 'showMenu',
+	initialize: function(attr) {
+		this.listenTo(attr.items, 'add', this.addOne);
 	},
 
 	render: function() {
-		this.$el.html(this.template());
 		return this;
 	},
 
-	showMenu: function() {
-		console.log('show');
+	addOne: function(item) {
+		var itemView = new DrillDownMenuItemView({
+			model: item,
+		});
+		this.$el.append(itemView.render().el);
+	},
+
+	show: function() {
+		
 	},
 });
