@@ -1,0 +1,68 @@
+.dropdown {
+	max-width: 160px;
+	min-height: 500px;
+	overflow: hidden;
+}
+
+.dropdown-menu {
+	display: block;
+	left: 159px;
+	top: 0;
+	margin-top: 0;
+}
+
+.dropdown-menu:first-child {
+	left: 0;
+}
+
+.dropdown-menu > li > a {
+	padding-right: 10px;
+}
+
+.dropdown-menu > li > a:after {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	-webkit-font-smoothing: antialiased;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-moz-osx-font-smoothing: grayscale;
+
+	content: "\e080";
+	float: right;
+	opacity: 0.5;
+}
+
+.dropdown-menu > li > a:only-child:after {
+	display: none;
+}
+
+.dropdown-menu.dropdown-menu-hide {
+	-webkit-animation: slide-left-to-hide 0.5s;
+	-moz-animation: slide-left-to-hide 0.5s;
+	-o-animation: slide-left-to-hide 0.5s;
+	animation: slide-left-to-hide 0.5s;
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes slide-left-to-hide {
+	from   { margin-left: 0; }
+	to { margin-left: -100%; }
+}
+@-moz-keyframes slide-left-to-hide {
+	from   { margin-left: 0; }
+	to { margin-left: -100%; }
+}
+@-o-keyframes slide-left-to-hide {
+	from   { margin-left: 0; }
+	to { margin-left: -100%; }
+}
+@keyframes slide-left-to-hide {
+	from   { margin-left: 0; }
+	to { margin-left: -100%; }
+}

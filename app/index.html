@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+	<body>
+		<div class="dropdown"></div>
+		<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="lib/underscore/underscore-min.js"></script>
+		<script type="text/javascript" src="lib/backbone/backbone-min.js"></script>
+		<script type="text/javascript" src="../dist/js/main.js"></script>
+		<script type="text/javascript">
+			var topList = new DrillDownMenuItems();
+			var itemList1 = new DrillDownMenuItems({ title: 'Asia' });
+			var itemList2 = new DrillDownMenuItems({ title: 'Europe' });
+			var item1 = new DrillDownMenuItem({ title: 'China' });
+			var item2 = new DrillDownMenuItem({ title: 'India' });
+			var view = new DrillDownMenuView({ items: topList }).render();
+			topList.add(itemList1);
+			itemList1.add(item1);
+			itemList1.add(item2);
+			console.log(view.el)
+			$('.dropdown').append(view.el);
+		</script>
+	</body>
+</html>

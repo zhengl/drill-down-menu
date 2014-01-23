@@ -10,12 +10,22 @@ module.exports = function(grunt) {
         src: 'app/js/*.js',
         options: {
           specs: 'test/js/*Spec.js',
+          styles: 'app/css/main.css',
+          helpers: 'test/js/helper.js',
           vendor: [
-            'app/js/lib/jquery/jquery.min.js',
-            'app/js/lib/underscore/underscore-min.js',
-            'app/js/lib/backbone/backbone-min.js',
+            'app/lib/jquery/jquery.min.js',
+            'app/lib/underscore/underscore-min.js',
+            'app/lib/backbone/backbone-min.js',
             ],
           keepRunner: true,
+        }
+      }
+    },
+
+    uglify: {
+      js: {
+        files: {
+          'dist/js/main.js': ['app/js/*.js'],
         }
       }
     },
@@ -23,7 +33,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: '**/*.js',
-        tasks: ['jasmine'],
+        tasks: ['jasmine', 'uglify'],
         options: {
           interrupt: true,
         },
@@ -44,6 +54,7 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
