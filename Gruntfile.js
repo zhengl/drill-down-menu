@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 
     watch: {
       scripts: {
-        files: '**/*.js',
+        files: ['**/*.js', '!**/node_modules/**', '!**/dist/**'],
         tasks: ['jasmine', 'uglify'],
         options: {
           interrupt: true,

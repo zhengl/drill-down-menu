@@ -14,11 +14,12 @@ var DrillDownMenuItemView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template({ title: this.model.attributes.title }));
 		
-		if(this.model instanceof DrillDownMenuItems) {
+		if(this.hasMenuItems()) {
 			this.$list = $('<ul></ul>');
-			this.$list.addClass('dropdown-menu');
+			this.$list.addClass('drilldown-menu');
 			this.$el.append(this.$list);
 		}
+		
 		return this;
 	},
 
@@ -29,9 +30,13 @@ var DrillDownMenuItemView = Backbone.View.extend({
 	},
 
 	open: function(event) {
-		if(this.model instanceof DrillDownMenuItems) {
+		if(this.hasMenuItems()) {
 			event.stopPropagation();
-			this.$el.parent().addClass('dropdown-menu-hide');
+			this.$el.parent().addClass('drilldown-menu-hide');
 		}
 	},
+
+	hasMenuItems: function() {
+		return this.model instanceof DrillDownMenuItems;
+	}
 });
