@@ -34,7 +34,8 @@
 }
 
 .drilldown-menu li {
-	border: 1px solid #dddddd;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
 	margin-bottom: -1px;
 }
 
@@ -79,7 +80,7 @@
 
 	content: "\e080";
 	float: right;
-	opacity: 0.5;
+	opacity: 0.2;
 }
 
 .drilldown-menu > li > a:only-child:after {
