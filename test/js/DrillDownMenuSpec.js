@@ -34,5 +34,5 @@ describe('DrillDownMenu', function(){
 		expect(menuItems[0].children[1].children.length).toBe(2);
 		expect(getTitle(menuItems[0].children[1].children[0])).toBe('China');
 		expect(getTitle(menuItems[0].children[1].children[1])).toBe('India');		
-	});	
+	});
 });

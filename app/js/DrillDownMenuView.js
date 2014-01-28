@@ -1,5 +1,5 @@
 var DrillDownMenuView = Backbone.View.extend({
-	className: 'drilldown',
+	className: 'drilldown drilldown-hide',
 
 	template: _.template('<button class="drilldown-menu-return btn btn-default"><span class="glyphicon glyphicon-backward"></span></button><button class="drilldown-menu-close btn btn-default"><span class="glyphicon glyphicon-remove"></span></button><ul class="drilldown-menu" />'),
 
@@ -47,4 +47,9 @@ var DrillDownMenuView = Backbone.View.extend({
 	close: function() {
 		this.$el.addClass('drilldown-hide');
 	},
+
+	open: function() {
+		console.log(this.el)
+		this.$el.removeClass('drilldown-hide');	
+	}
 });
