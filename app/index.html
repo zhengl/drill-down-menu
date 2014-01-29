@@ -5,12 +5,14 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
+		<!-- <input>
+		<p>Hello World!!!!</p> -->
 		<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="lib/underscore/underscore-min.js"></script>
 		<script type="text/javascript" src="lib/backbone/backbone-min.js"></script>
 		<script type="text/javascript" src="../dist/js/main.js"></script>
 		<script type="text/javascript">
-			var json = [
+			var items = [
 				{
 					title: 'Asia',
 					children: [
@@ -35,9 +37,11 @@
 				},
 			];
 
-			var menu = new DrillDownMenu(json);
-
+			var menu = new DrillDownMenu(items);
 			$('body').append(menu.getView().el);
+			// $('input').drilldown({
+			// 	items: items
+			// });
 		</script>
 	</body>
 </html>

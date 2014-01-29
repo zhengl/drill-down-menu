@@ -1,15 +1,24 @@
 var DrillDownMenu = function(json) {
-	var topList = new DrillDownMenuItems();
-	this.view = new DrillDownMenuView({ items: topList }).render();
+	this.items = new DrillDownMenuItems();
+	this.view = new DrillDownMenuView({ items: this.items }).render();
 
+	this.initialize(json);
+}
+
+DrillDownMenu.prototype.initialize = function(json) {
 	var _this = this;
 	json.forEach(function(item) {
-		_this.addMenuItem(topList, item)
+		_this.addMenuItem(_this.items, item);
 	});
-}
+};
 
 DrillDownMenu.prototype.getView = function() {
 	return this.view;
+};
+
+DrillDownMenu.prototype.setItems = function(json) {
+	this.items.reset();
+	this.initialize(json);
 };
 
 DrillDownMenu.prototype.addMenuItem = function(itemList, json) {

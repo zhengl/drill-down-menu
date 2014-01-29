@@ -11,6 +11,7 @@ var DrillDownMenuView = Backbone.View.extend({
 	initialize: function(attr) {
 		this.itemViews = [];
 		this.listenTo(attr.items, 'add', this.addOne);
+		this.listenTo(attr.items, 'reset', this.render);
 	},
 
 	render: function() {
@@ -49,7 +50,7 @@ var DrillDownMenuView = Backbone.View.extend({
 	},
 
 	open: function() {
-		console.log(this.el)
+		console.log(this)
 		this.$el.removeClass('drilldown-hide');	
 	}
 });
