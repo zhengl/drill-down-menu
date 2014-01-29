@@ -8,10 +8,17 @@ var DrillDownMenuView = Backbone.View.extend({
 		'click .drilldown-menu-close': 'close',
 	},
 
+	defaults: {
+		headerHeight: 32,
+		itemViewHeight: 41
+	},
+
 	initialize: function(attr) {
 		this.itemViews = [];
-		this.listenTo(attr.items, 'add', this.addOne);
-		this.listenTo(attr.items, 'reset', this.render);
+		this.items = attr.items;
+		this.listenTo(this.items, 'add', this.addOne);
+		this.listenTo(this.items, 'reset', this.render);
+		this.listenTo(this.items, 'change:isOpen', this.delayedResize);
 	},
 
 	render: function() {
@@ -23,6 +30,7 @@ var DrillDownMenuView = Backbone.View.extend({
 		var itemView = new DrillDownMenuItemView({ model: item });
 		this.itemViews.push(itemView);
 		this.getList().append(itemView.render().el);
+		this.resize(this.items);
 	},
 
 	getList: function() {
@@ -43,6 +51,7 @@ var DrillDownMenuView = Backbone.View.extend({
 
 	return: function() {
 		this.$('.drilldown-menu-hide').removeClass('drilldown-menu-hide');
+		this.resize(this.items);
 	},
 
 	close: function() {
@@ -50,7 +59,17 @@ var DrillDownMenuView = Backbone.View.extend({
 	},
 
 	open: function() {
-		console.log(this)
 		this.$el.removeClass('drilldown-hide');	
+	},
+
+	resize: function(item) {
+		this.$el.height(this.defaults.headerHeight 
+				+ item.collection.length 
+				* this.defaults.itemViewHeight);
+	},
+
+	delayedResize: function(item) {
+		var _this = this;
+		setTimeout(function() { _this.resize(item) }, 500);
 	}
 });
