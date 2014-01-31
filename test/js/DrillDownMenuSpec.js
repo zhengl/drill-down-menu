@@ -21,15 +21,23 @@ describe('DrillDownMenu', function(){
 				]
 			},
 			{ 
-				title: 'Europe'
+				title: 'Europe',
+				type: 'country'
 			},
 		];
 
-		var menu = new DrillDownMenu(json);
+		var options = {
+			iconMappings: function(type) {
+				return '<i class="icon" />';
+			}
+		}
+
+		var menu = new DrillDownMenu(json, options);
 		var menuItems = menu.getView().getList().children('li');
 		expect(menuItems.length).toBe(2);
 		expect(getTitle(menuItems[0])).toBe('Asia');
 		expect(getTitle(menuItems[1])).toBe('Europe');
+		expect(getIcon(menuItems[1]).hasClass('icon')).toBeTruthy();
 
 		expect(menuItems[0].children[1].children.length).toBe(2);
 		expect(getTitle(menuItems[0].children[1].children[0])).toBe('China');

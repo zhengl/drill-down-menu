@@ -1,19 +1,24 @@
 var DrillDownMenuItemView = Backbone.View.extend({
 	tagName: 'li',
 
-	template: _.template('<a><%= title %></a>'),
+	template: _.template('<a><%= icon %><%= title %></a>'),
 
 	events: {
 		'click a': 'onClick',
 	},
 
-	initialize: function() {
+	initialize: function(attr) {
+		this.iconMappings = attr.iconMappings;
+
 		this.listenTo(this.model, 'add', this.addItem);
-		this.listenTo(this.model, 'change:isOpen', this.open);
+		this.listenTo(this.model, 'open', this.open);
 	},
 
 	render: function() {
-		this.$el.html(this.template({ title: this.model.attributes.title }));
+		this.$el.html(this.template({ 
+			title: this.model.attributes.title,
+			icon: this.iconMappings(this.model.type)
+		}));
 		
 		if(this.hasMenuItems()) {
 			this.$list = $('<ul></ul>');
@@ -26,14 +31,17 @@ var DrillDownMenuItemView = Backbone.View.extend({
 
 	addItem: function(item) {
 		if(this.$list) {
-			this.$list.append(new DrillDownMenuItemView({ model: item }).render().el);
+			this.$list.append(new DrillDownMenuItemView({
+				model: item,
+				iconMappings: this.iconMappings
+			}).render().el);
 		}
 	},
 
 	onClick: function(event) {
 		if(this.hasMenuItems()) {
 			event.stopPropagation();
-			this.model.set('isOpen', true);
+			this.model.trigger('open', this.model);
 		}
 	},
 

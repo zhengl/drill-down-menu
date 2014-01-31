@@ -1,7 +1,7 @@
 +function($) {
 	var DrillDown = function($input, options) {
 		this.$input = $input;
-		var menu = new DrillDownMenu(options.items);
+		var menu = new DrillDownMenu(options.items, options.options);
 		
 		this
 			.appendMenuToInput(menu, $input)
@@ -11,12 +11,12 @@
 
 	}
 
-	DrillDown.DEFAULTS = {
+	DrillDown.DEFAULTS = $.extend({}, DrillDownMenu.DEFAULTS, {
 		items: [],
 		isValid: function(item, value) {
 			return (new RegExp(value, 'i')).test(item.title)
 		}
-	};
+	});
 
 	DrillDown.prototype.appendMenuToInput = function(menu, $input) {
 		$input.after(menu.getView().$el);

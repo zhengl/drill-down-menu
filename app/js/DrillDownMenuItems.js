@@ -5,7 +5,7 @@ var DrillDownMenuItems = Backbone.Model.extend({
 
 	add: function(item) {
 		this.collection.add(item);
-		this.listenTo(item, 'change:isOpen', this.propagateOpenEvent);
+		this.listenTo(item, 'open', this.propagateOpenEvent);
 		this.trigger('add', item);
 	},
 
@@ -15,6 +15,6 @@ var DrillDownMenuItems = Backbone.Model.extend({
 	},
 
 	propagateOpenEvent: function(item) {
-		this.trigger('change:isOpen', item);
+		this.trigger('open', item);
 	}
 });

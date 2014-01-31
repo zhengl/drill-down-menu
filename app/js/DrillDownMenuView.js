@@ -8,17 +8,19 @@ var DrillDownMenuView = Backbone.View.extend({
 		'click .drilldown-menu-close': 'close',
 	},
 
-	defaults: {
+	defaults: _.extend({}, {
 		headerHeight: 32,
 		itemViewHeight: 41
-	},
+	}, DrillDownMenu.DEFAULTS),
 
 	initialize: function(attr) {
 		this.itemViews = [];
 		this.items = attr.items;
+		this.iconMappings = attr.iconMappings || this.defaults.iconMappings;
+
 		this.listenTo(this.items, 'add', this.addOne);
 		this.listenTo(this.items, 'reset', this.render);
-		this.listenTo(this.items, 'change:isOpen', this.delayedResize);
+		this.listenTo(this.items, 'open', this.delayedResize);
 	},
 
 	render: function() {
@@ -27,7 +29,10 @@ var DrillDownMenuView = Backbone.View.extend({
 	},
 
 	addOne: function(item) {
-		var itemView = new DrillDownMenuItemView({ model: item });
+		var itemView = new DrillDownMenuItemView({ 
+			model: item,
+			iconMappings: this.iconMappings
+		});
 		this.itemViews.push(itemView);
 		this.getList().append(itemView.render().el);
 		this.resize(this.items);

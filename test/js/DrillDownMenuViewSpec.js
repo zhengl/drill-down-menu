@@ -4,12 +4,21 @@ describe('DrillDownMenuView', function() {
 	var itemList1 = new DrillDownMenuItems({ title: 'Asia' });
 	var item1 = new DrillDownMenuItem({ title: 'China' });
 	var item2 = new DrillDownMenuItem({ title: 'India' });
-	var itemList2 = new DrillDownMenuItems({ title: 'Europe' });
-	var item3 = new DrillDownMenuItem({ title: 'Africa' });
+	var itemList2 = new DrillDownMenuItems({ 
+		title: 'Europe', 
+		type: 'country'
+	});
+	var iconItem = new DrillDownMenuItem({ 
+		title: 'Africa',
+		type: 'country'
+	});
 
 	beforeEach(function() {
 		view = new DrillDownMenuView({
 			items: topList,
+			iconMappings: function(type) {
+				return '<i class="icon icon-country"></i>';
+			}
 		}).render();
 	});
 
@@ -28,6 +37,15 @@ describe('DrillDownMenuView', function() {
 			expect(menuItems.length).toBe(2);
 			expect(getTitle(menuItems[0])).toBe('China');
 			expect(getTitle(menuItems[1])).toBe('India');
+		});
+
+		it('should display icon', function() {
+			topList.reset();
+			topList.add(iconItem);
+
+			var list = view.getList();
+			var menuItems = list.children('li');
+			expect(getIcon(menuItems[0]).hasClass('icon')).toBeTruthy();
 		});
 	});
 
@@ -50,7 +68,12 @@ describe('DrillDownMenuView', function() {
 			expect(getTitle(menuItems[0].children[1].children[1])).toBe('India');
 		});
 
-		it('should be expendable on click', function() {
+		it('should display icon', function() {
+			var menuItems = view.getList().children('li');
+			expect(getIcon(menuItems[1]).hasClass('icon')).toBeTruthy();
+		});
+
+		it('should be expandable on click', function() {
 			var itemView = view.getItemView(0);
 			itemView.$el.children('a').click();
 			expect(view.getList().hasClass('drilldown-menu-hide')).toBeTruthy();

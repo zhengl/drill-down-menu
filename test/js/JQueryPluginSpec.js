@@ -7,6 +7,9 @@ describe('JQueryPlugin', function() {
 		$('body').append($input);
 		
 		$input.drilldown({
+			options: {
+				iconMappings: function() { return '<i class="icon" />' }
+			},
 			items: [
 				{
 					title: 'Asia',
@@ -47,6 +50,7 @@ describe('JQueryPlugin', function() {
 
 		expect(menuItems.length).toBe(2);
 		expect(getTitle(menuItems[0])).toBe('Asia');
+		expect(getIcon(menuItems[0]).hasClass('icon')).toBeTruthy();
 		expect(getTitle(menuItems[1])).toBe('Europe');
 
 		expect(menuItems[0].children[1].children.length).toBe(2);
