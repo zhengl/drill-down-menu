@@ -20,28 +20,30 @@ var DrillDownMenuItemView = Backbone.View.extend({
 			icon: this.iconMappings(this.model.type)
 		}));
 		
+		return this;
+	},
+
+	appendList: function() {
 		if(this.hasMenuItems()) {
 			this.$list = $('<ul></ul>');
 			this.$list.addClass('drilldown-menu');
 			this.$el.append(this.$list);
 		}
-		
-		return this;
 	},
 
 	addItem: function(item) {
-		if(this.$list) {
-			this.$list.append(new DrillDownMenuItemView({
-				model: item,
-				iconMappings: this.iconMappings
-			}).render().el);
-		}
+		if(this.$list === undefined) this.appendList();
+		
+		this.$list.append(new DrillDownMenuItemView({
+			model: item,
+			iconMappings: this.iconMappings
+		}).render().el);
 	},
 
 	onClick: function(event) {
 		if(this.hasMenuItems()) {
 			event.stopPropagation();
-			this.model.trigger('open', this.model);
+			this.model.open();
 		}
 	},
 
@@ -50,6 +52,6 @@ var DrillDownMenuItemView = Backbone.View.extend({
 	},
 
 	hasMenuItems: function() {
-		return this.model instanceof DrillDownMenuItems;
+		return this.model.hasChild || this.model.collection !== undefined;
 	}
 });

@@ -25,6 +25,17 @@ var DrillDownMenuView = Backbone.View.extend({
 
 	render: function() {
 		this.$el.html(this.template());
+
+		if(this.items.collection === undefined) return this;
+
+		this.items.collection.forEach(function(item) {
+			var itemView = new DrillDownMenuItemView({ 
+				model: item,
+				iconMappings: this.iconMappings
+			});
+			this.itemViews.push(itemView);
+			this.getList().append(itemView.render().el);
+		}, this);
 		return this;
 	},
 
@@ -68,8 +79,10 @@ var DrillDownMenuView = Backbone.View.extend({
 	},
 
 	resize: function(item) {
+		var listHeight = item.collection ? item.collection.length : 0;
+
 		this.$el.height(this.defaults.headerHeight 
-				+ item.collection.length 
+				+ listHeight
 				* this.defaults.itemViewHeight);
 	},
 

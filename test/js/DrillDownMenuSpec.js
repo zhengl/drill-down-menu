@@ -6,9 +6,8 @@ describe('DrillDownMenu', function(){
 		];
 
 		var menu = new DrillDownMenu(json);
-		var menuItems = menu.getView().getList().children('li');
-		expect(getTitle(menuItems[0])).toBe('China');
-		expect(getTitle(menuItems[1])).toBe('India');
+		var menuItems = getMenuItemElements(menu.getView());
+		expectFlatCountryItems(menuItems);
 	});
 
 	it('should be able to parse JSON array into multiple level menu', function() {
@@ -33,14 +32,54 @@ describe('DrillDownMenu', function(){
 		}
 
 		var menu = new DrillDownMenu(json, options);
-		var menuItems = menu.getView().getList().children('li');
-		expect(menuItems.length).toBe(2);
-		expect(getTitle(menuItems[0])).toBe('Asia');
-		expect(getTitle(menuItems[1])).toBe('Europe');
-		expect(getIcon(menuItems[1]).hasClass('icon')).toBeTruthy();
-
-		expect(menuItems[0].children[1].children.length).toBe(2);
-		expect(getTitle(menuItems[0].children[1].children[0])).toBe('China');
-		expect(getTitle(menuItems[0].children[1].children[1])).toBe('India');		
+		var menuItems = getMenuItemElements(menu.getView());
+		expectNestedContinentItems(menuItems);	
 	});
+
+	it('should be able to parse dynamic data into single level menu', function() {
+		var items = function() {
+			return [
+						{
+							title: 'China',
+						},
+						{ 
+							title: 'India',
+						},
+					];
+		}
+
+		var menu = new DrillDownMenu(items);
+		var menuItems = menu.getView().getList().children('li');
+		expectFlatCountryItems(menuItems);
+	});
+
+	it('should be able to parse dynamic data into multiple level menu', function() {
+		var items = function(title) {
+			if(title == 'Asia') {
+				return [
+							{
+								title: 'China',
+							},
+							{ 
+								title: 'India',
+							},
+						];
+			}
+
+			return [
+						{
+							title: 'Asia',
+							hasChild: true
+						},
+						{ 
+							title: 'Europe',
+						},
+					];
+		}
+
+		var menu = new DrillDownMenu(items);
+		var menuItems = menu.getView().getList().children('li');
+		$(menuItems[0]).children('a').click();
+		expectNestedContinentItems(menuItems);
+	});	
 });
