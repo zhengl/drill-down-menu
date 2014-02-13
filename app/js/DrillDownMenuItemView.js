@@ -1,7 +1,7 @@
 var DrillDownMenuItemView = Backbone.View.extend({
 	tagName: 'li',
 
-	template: _.template('<a><%= icon %><%= title %></a>'),
+	template: _.template('<a href="<%= href %>"><%= icon %><%= title %></a>'),
 
 	events: {
 		'click a': 'onClick',
@@ -9,6 +9,7 @@ var DrillDownMenuItemView = Backbone.View.extend({
 
 	initialize: function(attr) {
 		this.iconMappings = attr.iconMappings;
+		this.customizedEvents = attr.customizedEvents;
 
 		this.listenTo(this.model, 'add', this.addItem);
 		this.listenTo(this.model, 'open', this.open);
@@ -16,10 +17,13 @@ var DrillDownMenuItemView = Backbone.View.extend({
 
 	render: function() {
 		this.$el.html(this.template({ 
-			title: this.model.attributes.title,
+			title: this.model.title,
+			href: this.model.href,
 			icon: this.iconMappings(this.model.type)
 		}));
 		
+		this.delegateCustomizedEvents();
+
 		return this;
 	},
 
@@ -36,8 +40,11 @@ var DrillDownMenuItemView = Backbone.View.extend({
 		
 		this.$list.append(new DrillDownMenuItemView({
 			model: item,
-			iconMappings: this.iconMappings
+			iconMappings: this.iconMappings,
+			customizedEvents: this.customizedEvents
 		}).render().el);
+
+		this.delegateCustomizedEvents();
 	},
 
 	onClick: function(event) {
@@ -53,5 +60,33 @@ var DrillDownMenuItemView = Backbone.View.extend({
 
 	hasMenuItems: function() {
 		return this.model.hasChild || this.model.collection !== undefined;
+	},
+
+	delegateCustomizedEvents: function() {
+		var eventMatcher = /(\w+)\s+(\w+)?:(\w+)/;
+		for(var eventDef in this.customizedEvents) {
+			var found = eventDef.match(eventMatcher);
+			if(!found) continue;
+
+			var action = found[1];
+			var title = found[2];
+			var selector = found[3];
+
+			if(title && title != this.model.title) continue;
+
+			switch(selector) {
+				case 'child':
+					if(!this.hasMenuItems()) {
+						this.$el.on(action, this.customizedEvents[eventDef]);
+					}
+					break;
+				case 'parent':
+					if(this.hasMenuItems()) {
+						this.$el.on(action, this.customizedEvents[eventDef]);
+					}
+					break;
+			}
+			
+		}
 	}
 });

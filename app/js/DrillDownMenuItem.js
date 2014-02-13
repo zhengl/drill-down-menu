@@ -2,6 +2,7 @@ var DrillDownMenuItem = Backbone.Model.extend({
 	initialize: function(attr) {
 		if(attr) {
 			this.title = attr.title;
+			this.href = attr.href;
 			this.hasChild = attr.hasChild;
 			this.fetchChildren = attr.fetchChildren;	
 		}
@@ -32,9 +33,5 @@ var DrillDownMenuItem = Backbone.Model.extend({
 
 	propagateOpenEvent: function(item) {
 		this.trigger('open', item);
-	},
-
-	getTitle: function() {
-		return this.attributes.title;
 	},
 });

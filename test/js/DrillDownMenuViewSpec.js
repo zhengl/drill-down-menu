@@ -10,7 +10,7 @@ describe('DrillDownMenuView', function() {
 		topList = new DrillDownMenuItem();
 		itemListAsia = new DrillDownMenuItem({ title: 'Asia' });
 		itemChina = new DrillDownMenuItem({ title: 'China' });
-		itemIndia = new DrillDownMenuItem({ title: 'India' });
+		itemIndia = new DrillDownMenuItem({ title: 'India', href: 'fakeurl.com' });
 		itemListEurope = new DrillDownMenuItem({ 
 			title: 'Europe', 
 			type: 'country'
@@ -53,6 +53,13 @@ describe('DrillDownMenuView', function() {
 
 				var menuItems = getMenuItemElements(view);
 				expect(getIcon(menuItems[0]).hasClass('icon')).toBeTruthy();
+			});
+
+			it('should add href to item', function() {
+				topList.add(itemIndia);
+
+				var menuItems = getMenuItemElements(view);
+				expect($(menuItems[0]).children('a').attr('href')).toBe('fakeurl.com');
 			});
 		});
 

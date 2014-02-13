@@ -4,7 +4,8 @@ var DrillDownMenu = function(items, options) {
 	this.items = new DrillDownMenuItem();
 	this.view = new DrillDownMenuView({ 
 		items: this.items,
-		iconMappings: opt.iconMappings
+		iconMappings: opt.iconMappings,
+		customizedEvents: opt.events
 	}).render();
 
 	this.initialize(items);

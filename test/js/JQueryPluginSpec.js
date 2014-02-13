@@ -22,15 +22,17 @@ describe('JQueryPlugin', function() {
 	describe('with static data', function(){
 		beforeEach(function() {
 			$input.drilldown({
-				options: {
-					iconMappings: function() { return '<i class="icon" />' }
-				},
 				items: items
 			});
 			
 			$el = $input.next();
 		});
 
+		it('should have options for initializing of items as JSON', function() {
+			var menuItems = $el.children('.drilldown-menu').children('li');
+
+			expectNestedContinentItems(menuItems);
+		});
 
 		it('should be attached to a text input', function() {
 			expect($el.hasClass('drilldown-hide')).toBeTruthy();
@@ -49,12 +51,6 @@ describe('JQueryPlugin', function() {
 			expect($el.hasClass('drilldown-hide')).toBeTruthy();
 		});
 
-		it('should have options for initializing of items with JSON', function() {
-			var menuItems = $el.children('.drilldown-menu').children('li');
-
-			expectNestedContinentItems(menuItems);
-		});
-
 		it('should auto-complete', function() {
 			$input.val('c').keyup();
 
@@ -68,14 +64,10 @@ describe('JQueryPlugin', function() {
 	describe('with dynamic data', function() {
 		beforeEach(function() {
 			$input.drilldown({
-				options: {
-					iconMappings: function() { return '<i class="icon" />' }
-				},
 				items: function() {
 					return [
 								{
 									title: 'Asia',
-									hasChild: true
 								},
 								{ 
 									title: 'Europe'
@@ -87,13 +79,89 @@ describe('JQueryPlugin', function() {
 			$el = $input.next();
 		});
 
-		xit('should have options for initializing of items with JSON', function() {
+		xit('should have options for initializing of items as a function', function() {
 			var menuItems = $el.children('.drilldown-menu').children('li');
 
 			expect(menuItems.length).toBe(2);
 			expect(getTitle(menuItems[0])).toBe('Asia');
 			expect(getTitle(menuItems[1])).toBe('Europe');
 		});		
+	});
+
+	describe('with options', function() {
+		it('should be able to bind events to children', function() {
+			var clickSpy = jasmine.createSpy();
+			$input.drilldown({
+				items: items,
+				options: {
+					events: {
+						'click :child': clickSpy
+					}
+				}
+			});
+			
+			$el = $input.next();
+
+			var menuItems = $el.children('.drilldown-menu').children('li');
+			$(menuItems[0].children[1].children[0]).click();
+			expect(clickSpy).toHaveBeenCalled();
+		});
+
+		it('should be able to bind events to children with title', function() {
+			var clickSpy = jasmine.createSpy();
+			$input.drilldown({
+				items: items,
+				options: {
+					events: {
+						'click India:child': clickSpy
+					}
+				}
+			});
+			
+			$el = $input.next();
+
+			var menuItems = $el.children('.drilldown-menu').children('li');
+			$(menuItems[0].children[1].children[0]).click();
+			expect(clickSpy).not.toHaveBeenCalled();
+			$(menuItems[0].children[1].children[1]).click();
+			expect(clickSpy).toHaveBeenCalled();
+		});
+
+		it('should be able to bind events to parents', function() {
+			var clickSpy = jasmine.createSpy();
+			$input.drilldown({
+				items: items,
+				options: {
+					events: {
+						'click :parent': clickSpy
+					}
+				}
+			});
+			
+			$el = $input.next();
+
+			var menuItems = $el.children('.drilldown-menu').children('li');			
+			$(menuItems[0]).click();
+			expect(clickSpy).toHaveBeenCalled();
+		});
+
+		it('should be able to bind events to parents with title', function() {
+			var clickSpy = jasmine.createSpy();
+			$input.drilldown({
+				items: items,
+				options: {
+					events: {
+						'click Europe:parent': clickSpy
+					}
+				}
+			});
+			
+			$el = $input.next();
+
+			var menuItems = $el.children('.drilldown-menu').children('li');			
+			$(menuItems[1]).click();
+			expect(clickSpy).not.toHaveBeenCalled();
+		});			
 	});
 
 	afterEach(function() {

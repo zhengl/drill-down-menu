@@ -27,16 +27,16 @@ $('input').drilldown({
 or, as a standalone widget
 
 ```js
-    var topList = new DrillDownMenuItem();
-    var itemAsia = new DrillDownMenuItem({ title: 'Asia' });
-    var itemEurope = new DrillDownMenuItem({ title: 'Europe' });
-    var itemChina = new DrillDownMenuItem({ title: 'China' });
-    var itemIndia = new DrillDownMenuItem({ title: 'India' });
-    
-    var topList.add(itemAsia);
-    var topList.add(itemEurope);
-    var itemAsia.add(itemChina);
-    var itemAsia.add(itemEurope);
-    
-	var view = new DrillDownMenuView({ items: topList }).render();
+var topList = new DrillDownMenuItem();
+var itemAsia = new DrillDownMenuItem({ title: 'Asia' });
+var itemEurope = new DrillDownMenuItem({ title: 'Europe' });
+var itemChina = new DrillDownMenuItem({ title: 'China' });
+var itemIndia = new DrillDownMenuItem({ title: 'India' });
+
+var topList.add(itemAsia);
+var topList.add(itemEurope);
+var itemAsia.add(itemChina);
+var itemAsia.add(itemEurope);
+
+var view = new DrillDownMenuView({ items: topList }).render();
 ```

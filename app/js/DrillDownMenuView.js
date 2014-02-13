@@ -10,13 +10,15 @@ var DrillDownMenuView = Backbone.View.extend({
 
 	defaults: _.extend({}, {
 		headerHeight: 32,
-		itemViewHeight: 41
+		itemViewHeight: 41,
+		events: {}
 	}, DrillDownMenu.DEFAULTS),
 
 	initialize: function(attr) {
 		this.itemViews = [];
 		this.items = attr.items;
 		this.iconMappings = attr.iconMappings || this.defaults.iconMappings;
+		this.customizedEvents = attr.customizedEvents || this.defaults.events;
 
 		this.listenTo(this.items, 'add', this.addOne);
 		this.listenTo(this.items, 'reset', this.render);
@@ -26,27 +28,28 @@ var DrillDownMenuView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template());
 
-		if(this.items.collection === undefined) return this;
+		if(this.items.collection !== undefined) {
+			this.items.collection.forEach(function(item) {
+				this.createAndAppendItemView(item);
+			}, this);
+		}
 
-		this.items.collection.forEach(function(item) {
-			var itemView = new DrillDownMenuItemView({ 
-				model: item,
-				iconMappings: this.iconMappings
-			});
-			this.itemViews.push(itemView);
-			this.getList().append(itemView.render().el);
-		}, this);
 		return this;
 	},
 
 	addOne: function(item) {
+		this.createAndAppendItemView(item);
+		this.resize(this.items);
+	},
+
+	createAndAppendItemView: function(item) {
 		var itemView = new DrillDownMenuItemView({ 
 			model: item,
-			iconMappings: this.iconMappings
+			iconMappings: this.iconMappings,
+			customizedEvents: this.customizedEvents
 		});
 		this.itemViews.push(itemView);
 		this.getList().append(itemView.render().el);
-		this.resize(this.items);
 	},
 
 	getList: function() {
@@ -89,5 +92,5 @@ var DrillDownMenuView = Backbone.View.extend({
 	delayedResize: function(item) {
 		var _this = this;
 		setTimeout(function() { _this.resize(item) }, 500);
-	}
+	},
 });
